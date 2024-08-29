@@ -1,4 +1,4 @@
-package grp1.auth;
+package grp1.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

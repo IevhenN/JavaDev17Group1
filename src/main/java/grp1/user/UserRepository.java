@@ -1,6 +1,5 @@
-package grp1.auth;
+package grp1.user;
 
-import grp1.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

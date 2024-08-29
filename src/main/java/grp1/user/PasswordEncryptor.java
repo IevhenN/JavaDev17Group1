@@ -1,4 +1,4 @@
-package grp1.auth;
+package grp1.user;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

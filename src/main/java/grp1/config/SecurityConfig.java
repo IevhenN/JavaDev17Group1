@@ -1,7 +1,7 @@
 package grp1.config;
 
-import grp1.auth.User;
-import grp1.auth.UserService;
+import grp1.user.User;
+import grp1.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
