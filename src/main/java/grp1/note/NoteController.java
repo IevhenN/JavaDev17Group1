@@ -24,6 +24,18 @@ public class NoteController {
         return "note/list";
     }
 
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("note", new Note());
+        return "note/create";
+    }
+
+    @PostMapping("/create")
+    public String createNote(@ModelAttribute Note note) {
+        noteService.save(note);
+        return "redirect:/note/list";
+    }
+
     @PostMapping("/delete")
     public void noteDelete(@RequestParam Long id, HttpServletResponse response) throws IOException {
         noteService.deleteById(id);
