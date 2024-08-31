@@ -2,4 +2,4 @@ INSERT INTO note (title,content)
 VALUES ('Start note','Start content');
 
 INSERT INTO users (username,password)
-VALUES ('user','$2a$10$feSgAmXnxsmeSysS9CmkEOXhLedNlE9ERZ3UgBlkhS4YA38fCncPO');
+VALUES ('admin','$2a$10$9mdH0hw1vbukRPHX8GmuoOCWQPwHpHiiDiHin5eJej/0NoXbeH3oq');

@@ -1,5 +1,6 @@
 package grp1.note;
 
+import grp1.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,4 +20,9 @@ public class Note {
     private String title;
     @Column
     private String content;
+
+    //для тесту налаштовувала
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 }
