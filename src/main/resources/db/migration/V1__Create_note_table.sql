@@ -6,10 +6,12 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 
-CREATE TABLE note (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL
-    //для тестудодала
-    //user_id BIGINT REFERENCES users(id)
+CREATE TABLE IF NOT EXISTS note (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    title VARCHAR(100) NOT NULL CHECK (LENGTH(title) BETWEEN 5 AND 100),
+    content TEXT NOT NULL CHECK (LENGTH(content) BETWEEN 5 AND 10000),
+    access_type VARCHAR(10) NOT NULL,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
