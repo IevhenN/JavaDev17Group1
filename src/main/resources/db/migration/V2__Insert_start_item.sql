@@ -1,5 +1,6 @@
 INSERT INTO users (username,password)
-VALUES ('user','$2a$10$feSgAmXnxsmeSysS9CmkEOXhLedNlE9ERZ3UgBlkhS4YA38fCncPO');
+VALUES ('admin','$2a$10$9mdH0hw1vbukRPHX8GmuoOCWQPwHpHiiDiHin5eJej/0NoXbeH3oq'),
+       ('user2', '$2a$10$ebB9xagf3I6FGy51dKpfieOQH5WDDSy.lgd.RXCJUzXiAcOi0xfU2');
 
 INSERT INTO note (id, user_id, title, content, access_type)
 VALUES (UUID(), 1, 'Start note', 'Start content', 'PRIVATE');

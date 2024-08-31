@@ -35,4 +35,5 @@ public class Note {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccessType accessType;
+
 }
