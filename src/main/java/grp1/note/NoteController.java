@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,6 @@ public class NoteController {
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         Note note = new Note();
-        note.setAccessType(AccessType.PRIVATE);
         model.addAttribute("note", note);
         return "note/create";
     }
