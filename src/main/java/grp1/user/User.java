@@ -4,11 +4,13 @@ import grp1.note.Note;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString(exclude = "notes")
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
