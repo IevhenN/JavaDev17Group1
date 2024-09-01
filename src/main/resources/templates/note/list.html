@@ -18,22 +18,32 @@
                       class="badge badge-info mt-2"></span>
             </div>
             <div>
-                <form action="/note/delete" method="post" class="d-inline">
-                    <input type="hidden" name="id" th:value="${note.id}">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
                 <form action="/note/edit" method="get" class="d-inline ml-2">
                     <input type="hidden" name="id" th:value="${note.id}">
                     <button type="submit" class="btn btn-primary btn-sm">Edit</button>
                 </form>
+                <form action="/note/delete" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${note.id}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary btn-sm ml-2" onclick="copyToClipboard([[${note.id}]])">Copy Link</button>
             </div>
         </li>
     </ul>
     <a href="/note/create" class="btn btn-success mt-3">Add note</a>
-    <a href="/signup" class="btn btn-info mt-3">Sign Up</a>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function copyToClipboard(noteId) {
+        const link = `${window.location.origin}/note/${noteId}`;
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Link copied to clipboard');
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+</script>
 </body>
 </html>
