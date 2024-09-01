@@ -26,7 +26,9 @@ public class NoteController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("note", new Note());
+        Note note = new Note();
+        note.setAccessType(AccessType.PRIVATE);
+        model.addAttribute("note", note);
         return "note/create";
     }
 
