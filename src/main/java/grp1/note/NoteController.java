@@ -1,7 +1,9 @@
 package grp1.note;
 
+import grp1.user.User;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,11 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String createNote(@ModelAttribute Note note) {
+    public String createNote(@ModelAttribute Note note, @AuthenticationPrincipal User user) {
+        if (user == null) {
+            return "redirect:/login";
+        }
+        note.setUser(user);
         noteService.save(note);
         return "redirect:/note/list";
     }
