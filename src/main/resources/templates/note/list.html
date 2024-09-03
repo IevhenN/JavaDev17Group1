@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>List notes</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="container">
@@ -27,6 +28,7 @@
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
                 <button type="button" class="btn btn-secondary btn-sm ml-2" onclick="copyToClipboard([[${note.id}]])">Copy Link</button>
+                <button type="button" class="btn btn-secondary btn-sm ml-2" th:onclick="|window.location.href='@{/note/share/{id}(id = ${note.id})}'|">Note</button>
             </div>
         </li>
     </ul>

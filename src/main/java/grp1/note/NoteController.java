@@ -62,7 +62,6 @@ public class NoteController {
         return "redirect:/note/list";
     }
 
-
     @GetMapping("/edit")
     public String noteEdit(@RequestParam String id, Model model) {
         User currentUser = userService.getCurrentUser();
@@ -104,4 +103,23 @@ public class NoteController {
     }
 
 
+    @GetMapping("/share/{id}")
+    public String viewNote(@PathVariable("id") String noteId, Model model) {
+        User user = userService.getCurrentUser();
+        Note note = new Note();
+        Optional<Note> optionalNote = noteService.getNoteByIdAndUsername(noteId, user.getUsername());
+        System.out.println("optionalNote = " + optionalNote);
+
+        if (optionalNote.isPresent()) {
+            note = optionalNote.get();
+        }
+        if (note.getAccessType().equals(AccessType.PRIVATE)){
+            //TODO: error page
+            return "redirect:/note/list";
+        }
+
+            model.addAttribute("note", note);
+            return "note/access-permit";
+
+    }
 }
