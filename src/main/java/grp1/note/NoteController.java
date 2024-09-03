@@ -45,32 +45,70 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public void noteDelete(@RequestParam Long id, HttpServletResponse response) throws IOException {
+    public void noteDelete(@RequestParam String id, HttpServletResponse response) throws IOException {
         noteService.deleteById(id);
         response.sendRedirect("/note/list");
     }
 
     @GetMapping("/edit")
-    public String noteEdit(@RequestParam(required = false, defaultValue = "0") Long id
-            , Model model) {
-
-        Note note = new Note();
-        if (id != null) {
-            Optional<Note> optionalNote = noteService.getById(id);
-            if (optionalNote.isPresent()) {
-                note = optionalNote.get();
-            }
+    public String noteEdit(@RequestParam String id, Model model) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
         }
 
-        model.addAttribute("note",note);
-        return "note/edit";
+        Optional<Note> optionalNote = noteService.getById(id);
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+            model.addAttribute("note", note);
+            return "note/edit";
+        } else {
+            return "redirect:/note/list";
+        }
     }
 
     @PostMapping("/edit")
     public String noteSave(@ModelAttribute Note note) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
 
-        noteService.save(note);
+        Optional<Note> existingNoteOptional = noteService.getById(note.getId());
+        if (existingNoteOptional.isPresent()) {
+            Note existingNote = existingNoteOptional.get();
+
+            existingNote.setTitle(note.getTitle());
+            existingNote.setContent(note.getContent());
+            existingNote.setAccessType(note.getAccessType());
+
+            noteService.save(existingNote);
+        } else {
+            return "redirect:/note/list";
+        }
 
         return "redirect:/note/list";
     }
+
+
+    @GetMapping("/share/{id}")
+    public String viewNote(@PathVariable("id") String noteId, Model model) {
+        User user = userService.getCurrentUser();
+        Note note = new Note();
+        Optional<Note> optionalNote = noteService.getNoteByIdAndUsername(noteId, user.getUsername());
+        System.out.println("optionalNote = " + optionalNote);
+
+        if (optionalNote.isPresent()) {
+            note = optionalNote.get();
+        }
+        if (note.getAccessType().equals(AccessType.PRIVATE)){
+            //TODO: error page
+            return "redirect:/note/list";
+        }
+
+            model.addAttribute("note", note);
+            return "note/access-permit";
+
+    }
+
 }
