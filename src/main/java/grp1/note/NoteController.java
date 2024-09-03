@@ -45,11 +45,23 @@ public class NoteController {
         return "redirect:/note/list";
     }
 
-//    @PostMapping("/delete")
-//    public void noteDelete(@RequestParam Long id, HttpServletResponse response) throws IOException {
-//        noteService.deleteById(id);
-//        response.sendRedirect("/note/list");
-//    }
+    @PostMapping("/delete")
+    public String noteDelete(@RequestParam String id, HttpServletResponse response) throws IOException {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        Optional<Note> optionalNote = noteService.getById(id);
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+
+           noteService.deleteById(id);
+        }
+
+        return "redirect:/note/list";
+    }
+
 
     @GetMapping("/edit")
     public String noteEdit(@RequestParam String id, Model model) {
