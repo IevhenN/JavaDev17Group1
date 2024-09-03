@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class NoteController {
     public String getNoteList(Model model) {
 
         List<Note> notes = noteService.findAll();
-        model.addAttribute("notes",notes);
+        model.addAttribute("notes", notes);
         return "note/list";
     }
 
@@ -44,33 +45,51 @@ public class NoteController {
         return "redirect:/note/list";
     }
 
-    @PostMapping("/delete")
-    public void noteDelete(@RequestParam Long id, HttpServletResponse response) throws IOException {
-        noteService.deleteById(id);
-        response.sendRedirect("/note/list");
-    }
+//    @PostMapping("/delete")
+//    public void noteDelete(@RequestParam Long id, HttpServletResponse response) throws IOException {
+//        noteService.deleteById(id);
+//        response.sendRedirect("/note/list");
+//    }
 
     @GetMapping("/edit")
-    public String noteEdit(@RequestParam(required = false, defaultValue = "0") Long id
-            , Model model) {
-
-        Note note = new Note();
-        if (id != null) {
-            Optional<Note> optionalNote = noteService.getById(id);
-            if (optionalNote.isPresent()) {
-                note = optionalNote.get();
-            }
+    public String noteEdit(@RequestParam String id, Model model) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
         }
 
-        model.addAttribute("note",note);
-        return "note/edit";
+        Optional<Note> optionalNote = noteService.getById(id);
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+            model.addAttribute("note", note);
+            return "note/edit";
+        } else {
+            return "redirect:/note/list";
+        }
     }
 
     @PostMapping("/edit")
     public String noteSave(@ModelAttribute Note note) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
 
-        noteService.save(note);
+        Optional<Note> existingNoteOptional = noteService.getById(note.getId());
+        if (existingNoteOptional.isPresent()) {
+            Note existingNote = existingNoteOptional.get();
+
+            existingNote.setTitle(note.getTitle());
+            existingNote.setContent(note.getContent());
+            existingNote.setAccessType(note.getAccessType());
+
+            noteService.save(existingNote);
+        } else {
+            return "redirect:/note/list";
+        }
 
         return "redirect:/note/list";
     }
+
+
 }
