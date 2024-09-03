@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class NoteController {
     public String getNoteList(Model model) {
 
         List<Note> notes = noteService.findAll();
-        model.addAttribute("notes",notes);
+        model.addAttribute("notes", notes);
         return "note/list";
     }
 
@@ -45,9 +46,20 @@ public class NoteController {
     }
 
     @PostMapping("/delete")
-    public void noteDelete(@RequestParam String id, HttpServletResponse response) throws IOException {
-        noteService.deleteById(id);
-        response.sendRedirect("/note/list");
+    public String noteDelete(@RequestParam String id, HttpServletResponse response) throws IOException {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        Optional<Note> optionalNote = noteService.getById(id);
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+
+           noteService.deleteById(id);
+        }
+
+        return "redirect:/note/list";
     }
 
     @GetMapping("/edit")
@@ -110,5 +122,4 @@ public class NoteController {
             return "note/access-permit";
 
     }
-
 }

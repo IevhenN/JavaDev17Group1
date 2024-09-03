@@ -35,6 +35,7 @@ public class NoteService {
         return noteRepository.findById(id);
     }
 
+
     public Optional<Note> getNoteByIdAndUsername(String id, String username) {
         return noteRepository.findByIdAndUsername(id, username);
     }
