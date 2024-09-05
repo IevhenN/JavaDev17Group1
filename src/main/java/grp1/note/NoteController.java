@@ -87,7 +87,7 @@ public class NoteController {
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
 
-            if (!note.getUser().getId().equals(currentUser.getId())) {
+            if (!note.getUser().equals(currentUser)) {
                 return "redirect:/note/denied";
             }
 
