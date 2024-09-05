@@ -61,7 +61,6 @@ public class NoteController {
         Optional<Note> optionalNote = noteService.getById(id);
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
-
            noteService.deleteById(id);
         }
 
@@ -120,8 +119,7 @@ public class NoteController {
             note = optionalNote.get();
         }
         if (note.getAccessType().equals(AccessType.PRIVATE)){
-            //TODO: error page
-            return "redirect:/note/list";
+            return "redirect:/note/denied";
         }
 
             model.addAttribute("note", note);
@@ -142,5 +140,10 @@ public class NoteController {
             redirectAttributes.addAttribute(NOTE_ERROR_ATTRIBUTE, e.getMessage());
             return false;
         }
+    }
+
+    @GetMapping("/denied")
+    public String getDenied(Model model) {
+        return "note/access-denied";
     }
 }
