@@ -68,6 +68,9 @@ public class NoteController {
         Optional<Note> optionalNote = noteService.getById(id);
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
+            if (!note.getUser().equals(currentUser)) {
+                return "redirect:/note/denied";
+            }
             noteService.deleteById(id);
         }
 
