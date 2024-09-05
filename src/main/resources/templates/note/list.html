@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>List notes</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
 <div class="container">
@@ -27,21 +26,23 @@
                     <input type="hidden" name="id" th:value="${note.id}">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
-                <button type="button" class="btn btn-secondary btn-sm ml-2" onclick="copyToClipboard([[${note.id}]])">Copy Link</button>
-                <button type="button" class="btn btn-secondary btn-sm ml-2" th:onclick="|window.location.href='@{/note/share/{id}(id = ${note.id})}'|">Note</button>
+                <button type="button" class="btn btn-secondary btn-sm ml-2"
+                        th:data-note-id="${note.id}"
+                        onclick="copyToClipboard(this.getAttribute('data-note-id'))">Copy Link</button>
             </div>
         </li>
     </ul>
     <a href="/note/create" class="btn btn-success mt-3">Add note</a>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function copyToClipboard(noteId) {
-        const link = `${window.location.origin}/note/${noteId}`;
+        const link = `${window.location.origin}/note/share/${noteId}`;
         navigator.clipboard.writeText(link).then(() => {
-            alert('Link copied to clipboard');
+            alert('Link copied to clipboard: ' + link);
         }).catch(err => {
             console.error('Could not copy text: ', err);
         });

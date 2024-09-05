@@ -61,7 +61,7 @@ public class NoteController {
         Optional<Note> optionalNote = noteService.getById(id);
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
-           noteService.deleteById(id);
+            noteService.deleteById(id);
         }
 
         return "redirect:/note/list";
@@ -111,9 +111,8 @@ public class NoteController {
     @GetMapping("/share/{id}")
     public String viewNote(@PathVariable("id") String noteId, Model model) {
         User user = userService.getCurrentUser();
-        Note note = new Note();
-        Optional<Note> optionalNote = noteService.getNoteByIdAndUsername(noteId, user.getUsername());
-        System.out.println("optionalNote = " + optionalNote);
+        Optional<Note> optionalNote = noteService.getById(noteId);
+
 
         if (optionalNote.isPresent()) {
             note = optionalNote.get();
@@ -146,4 +145,3 @@ public class NoteController {
     public String getDenied(Model model) {
         return "note/access-denied";
     }
-}
