@@ -109,20 +109,19 @@ public class NoteController {
 
 
     @GetMapping("/share/{id}")
-    public String viewNote(@PathVariable("id") String noteId, Model model) {
-        User user = userService.getCurrentUser();
+    public String viewSharedNote(@PathVariable("id") String noteId, Model model) {
         Optional<Note> optionalNote = noteService.getById(noteId);
-
+        Note note = new Note();
 
         if (optionalNote.isPresent()) {
             note = optionalNote.get();
         }
-        if (note.getAccessType().equals(AccessType.PRIVATE)){
+        if (note.getAccessType().equals(AccessType.PRIVATE)) {
             return "redirect:/note/denied";
         }
 
-            model.addAttribute("note", note);
-            return "note/access-permit";
+        model.addAttribute("note", note);
+        return "note/access-permit";
     }
 
     @GetMapping("/error")
@@ -145,3 +144,4 @@ public class NoteController {
     public String getDenied(Model model) {
         return "note/access-denied";
     }
+}
