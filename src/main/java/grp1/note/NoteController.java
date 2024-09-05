@@ -24,9 +24,16 @@ public class NoteController {
 
     @GetMapping("/list")
     public String getNoteList(Model model) {
+        User currentUser = userService.getCurrentUser();
 
-        List<Note> notes = noteService.findAll();
-        model.addAttribute("notes", notes);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        List<Note> userNotes = noteService.findByUserId(currentUser.getId());
+
+        model.addAttribute("notes", userNotes);
+
         return "note/list";
     }
 
@@ -70,16 +77,24 @@ public class NoteController {
     @GetMapping("/edit")
     public String noteEdit(@RequestParam String id, Model model) {
         User currentUser = userService.getCurrentUser();
+
         if (currentUser == null) {
             return "redirect:/login";
         }
 
         Optional<Note> optionalNote = noteService.getById(id);
+
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
+
+            if (!note.getUser().getId().equals(currentUser.getId())) {
+                return "redirect:/note/denied";
+            }
+
             model.addAttribute("note", note);
             return "note/edit";
         } else {
+
             return "redirect:/note/list";
         }
     }
