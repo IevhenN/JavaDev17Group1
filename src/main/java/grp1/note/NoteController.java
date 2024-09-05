@@ -56,7 +56,7 @@ public class NoteController {
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
 
-           noteService.deleteById(id);
+            noteService.deleteById(id);
         }
 
         return "redirect:/note/list";
@@ -106,20 +106,18 @@ public class NoteController {
     @GetMapping("/share/{id}")
     public String viewNote(@PathVariable("id") String noteId, Model model) {
         User user = userService.getCurrentUser();
-        Note note = new Note();
-        Optional<Note> optionalNote = noteService.getNoteByIdAndUsername(noteId, user.getUsername());
-        System.out.println("optionalNote = " + optionalNote);
+        Optional<Note> optionalNote = noteService.getById(noteId);
 
-        if (optionalNote.isPresent()) {
-            note = optionalNote.get();
-        }
-        if (note.getAccessType().equals(AccessType.PRIVATE)){
-            //TODO: error page
-            return "redirect:/note/list";
+        if (optionalNote.isEmpty()) {
+            return "note/not-found";
         }
 
-            model.addAttribute("note", note);
-            return "note/access-permit";
+        Note note = optionalNote.get();
+        if (note.getAccessType().equals(AccessType.PRIVATE) && !note.getUser().getUsername().equals(user.getUsername())) {
+            return "note/not-found";
+        }
 
+        model.addAttribute("note", note);
+        return "note/access-permit";
     }
-}
+    }
