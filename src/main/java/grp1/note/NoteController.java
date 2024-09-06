@@ -24,9 +24,16 @@ public class NoteController {
 
     @GetMapping("/list")
     public String getNoteList(Model model) {
+        User currentUser = userService.getCurrentUser();
 
-        List<Note> notes = noteService.findAll();
-        model.addAttribute("notes", notes);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        List<Note> userNotes = noteService.findByUserId(currentUser.getId());
+
+        model.addAttribute("notes", userNotes);
+
         return "note/list";
     }
 
@@ -61,6 +68,9 @@ public class NoteController {
         Optional<Note> optionalNote = noteService.getById(id);
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
+            if (!note.getUser().equals(currentUser)) {
+                return "redirect:/note/denied";
+            }
             noteService.deleteById(id);
         }
 
@@ -70,16 +80,24 @@ public class NoteController {
     @GetMapping("/edit")
     public String noteEdit(@RequestParam String id, Model model) {
         User currentUser = userService.getCurrentUser();
+
         if (currentUser == null) {
             return "redirect:/login";
         }
 
         Optional<Note> optionalNote = noteService.getById(id);
+
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
+
+            if (!note.getUser().equals(currentUser)) {
+                return "redirect:/note/denied";
+            }
+
             model.addAttribute("note", note);
             return "note/edit";
         } else {
+
             return "redirect:/note/list";
         }
     }
@@ -143,5 +161,22 @@ public class NoteController {
     @GetMapping("/denied")
     public String getDenied(Model model) {
         return "note/access-denied";
+    }
+
+    @GetMapping("/view/{id}")
+    public String viewNote(@PathVariable("id") String noteId, Model model) {
+        User currentUser = userService.getCurrentUser();
+        Optional<Note> optionalNote = noteService.getById(noteId);
+
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+            if (note.getUser().equals(currentUser) || note.getAccessType() == AccessType.PUBLIC) {
+                model.addAttribute("note", note);
+                return "note/view";
+            } else {
+                return "redirect:/note/denied";
+            }
+        }
+        return "redirect:/note/list";
     }
 }

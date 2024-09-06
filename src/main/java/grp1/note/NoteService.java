@@ -58,4 +58,8 @@ public class NoteService {
             throw new IllegalArgumentException(format("Note content should be between {0} and {1}  characters", NOTE_CONTENT_MIN_LENGTH, NOTE_CONTENT_MAX_LENGTH));
         }
     }
+
+    public List<Note> findByUserId(Long userId) {
+        return noteRepository.findByUserId(userId);
+    }
 }
