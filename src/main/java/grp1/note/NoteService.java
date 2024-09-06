@@ -1,14 +1,10 @@
 package grp1.note;
 
-import grp1.note.Note;
-import grp1.note.NoteRepository;
-import grp1.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class NoteService {
@@ -38,5 +34,9 @@ public class NoteService {
 
     public Optional<Note> getNoteByIdAndUsername(String id, String username) {
         return noteRepository.findByIdAndUsername(id, username);
+    }
+
+    public Optional<Note> getNoteByContent(String content){
+        return noteRepository.findbyContent("%" + content + "%");
     }
 }
