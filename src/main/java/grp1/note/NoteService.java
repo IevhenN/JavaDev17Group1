@@ -63,4 +63,8 @@ public class NoteService {
         return noteRepository.findByUserId(userID);
     }
 
+    public List<Note> listNoteByContent(String content){
+        return noteRepository.findbyContentList("%" + content + "%");
+    }
+
 }

@@ -205,4 +205,18 @@ public class NoteController {
         return "note/found-notes";
     }
 
+    @GetMapping("/found-noteslist/{content}")
+    public String viewNotesByContentList(@PathVariable("content") String content, Model model){
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        List<Note> userNotes = noteService.listNoteByContent(content);
+
+        model.addAttribute("notes", userNotes);
+
+        return "note/list";
+
+    }
+
 }
