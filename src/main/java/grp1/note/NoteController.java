@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
@@ -179,4 +180,29 @@ public class NoteController {
         }
         return "redirect:/note/list";
     }
+
+    @GetMapping("/notfound")
+    public String notFound(Model model) {
+        return "note/note-notfound";
+    }
+
+    @GetMapping("/found-notes/{content}")
+    public String viewNotesByContent(@PathVariable("content") String content, Model model) {
+        Note note = new Note();
+        User currentUser = userService.getCurrentUser();
+        Optional<Note> optionalNote = noteService.getNoteByContent(content);
+
+        if (optionalNote.isPresent()) {
+            note = optionalNote.get();
+        }
+        if (optionalNote.isEmpty()) {
+            return "redirect:/note/notfound";
+        }
+        if (note.getAccessType().equals(AccessType.PRIVATE) && !note.getUser().equals(currentUser)) {
+            return "redirect:/note/denied";
+        }
+        model.addAttribute("note", note);
+        return "note/found-notes";
+    }
+
 }

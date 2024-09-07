@@ -1,14 +1,10 @@
 package grp1.note;
 
-import grp1.note.Note;
-import grp1.note.NoteRepository;
-import grp1.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static java.text.MessageFormat.format;
 
@@ -49,6 +45,10 @@ public class NoteService {
         return noteRepository.findByIdAndUsername(id, username);
     }
 
+    public Optional<Note> getNoteByContent(String content) {
+        return noteRepository.findbyContent("%" + content + "%");
+    }
+
     private void validateNote(Note note) {
         if (note.getTitle().length() < NOTE_TITLE_MIN_LENGTH || note.getTitle().length() >= NOTE_TITLE_MAX_LENGTH) {
             throw new IllegalArgumentException(format("Note title should be between {0} and {1} characters", NOTE_TITLE_MIN_LENGTH, NOTE_TITLE_MAX_LENGTH));
@@ -59,7 +59,8 @@ public class NoteService {
         }
     }
 
-    public List<Note> findByUserId(Long userId) {
-        return noteRepository.findByUserId(userId);
+    public List<Note> findByUserId(Long userID) {
+        return noteRepository.findByUserId(userID);
     }
+
 }
