@@ -5,64 +5,28 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Show Note</title>
-    <style>
-        .container{
-            text-align:center;
-            vertical-align:middle;
-            color: -moz-mac-accentdarkestshadow;
-            font-family: 'Georgia';
-            font-size: large;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .button-container button {
-            flex: 1;
-            margin: 5px;
-            padding: 10px 0;
-            font-weight: bold;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 <div class="container">
 
-    <img src="/img/see.jpg" />
+    <img class="scalable" src="/img/see.jpg" />
 
-    <form method="get" class="form-container" th:object="${note}">
+    <form method="get" class="form-container scalable" th:object="${note}">
         <div style=" margin-top: 40px; margin-bottom: 20px;">
         <fieldset disabled>
-            <input class="form-control form-control-lg " type="text" th:field="*{title}" style="margin-bottom: 5px; background: #fffff5; font-weight: bold; text-align: center; color: #194f99; font-size: large;">
-            <textarea class="form-control" id="textArea" name="textArea" rows="5" th:field="*{content}"  style="margin-bottom: 5px; background: #fdfefb; font-weight: bold; text-align: center; color: #1a576b; font-size: large"></textarea>
+            <input class="form-control found_note_text form-control-lg" type="text" th:field="*{title}" style="background-color: #fffff5"/>
+            <textarea class="form-control found_note_textarea" id="textArea" name="textArea" rows="5" th:field="*{content}" style="background-color: #fdfefb"></textarea>
         </fieldset>
         </div>
 
         <div class="button-container">
-            <button type="button" class="btn btn-outline-info"
-                    th:data-note-id="${note.id}"
-                    onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{copy.link}">Copy Link</button>
             <button type="button" class="btn btn-outline-success"
                     th:onclick="|window.location.href='@{/note/list}'|" th:text="#{back}">To the note list</button>
         </div>
     </form>
 </div>
-<script th:inline="javascript">
-    function copyToClipboard(noteId) {
-        const link = `${window.location.origin}/note/share/${noteId}`;
-        const copiedMessage = /*[[#{link.copied}]]*/ 'Link copied to clipboard: ';
-        const errorMessage = /*[[#{link.copy.error}]]*/ 'Could not copy text: ';
-        navigator.clipboard.writeText(link).then(() => {
-            alert(copiedMessage + link);
-        }).catch(err => {
-            console.error(errorMessage, err);
-        });
-    }
-</script>
 </body>
 </html>
 

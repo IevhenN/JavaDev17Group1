@@ -9,7 +9,7 @@
 
 <body>
 <div class="container">
-    <img class="found_note_space" src="/img/welcome.png"/>
+    <img class="found_note_space scalable" src="/img/welcome.png"/>
 
     <form th:action="@{/register}" th:method="post" class="mx-auto form_login">
         <p th:if="${error}" th:text="${error}" class="error_red"></p>

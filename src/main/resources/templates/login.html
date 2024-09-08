@@ -5,20 +5,14 @@
     <title>Вхід</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        select {
-            width: 500px;  /* Занимает всю ширину родительского контейнера */
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
 </head>
 
 <body>
 <div class="container">
-    <img class="found_note_space" src="/img/welcome.png" />
-    <form th:action="@{/login}" th:method="post" style="width: 500px;" class="mx-auto">
-        <p th:text="${error}" style="color:red"></p>
+    <img class="found_note_space scalable" src="/img/welcome.png" />
+
+    <form th:action="@{/login}" th:method="post" class="mx-auto form_login">
+        <p th:text="${error}" class="error_red"></p>
         <h1 class="text-center">Вхід</h1>
         <div class="form-group">
             <label th:text="#{login}" for="username">Логін</label>
@@ -32,9 +26,7 @@
         <button type="submit" class="btn btn-outline-success w-100 login_set" th:text="#{sign.in}">Увійти</button>
         <a href="/register" class="btn btn-outline-primary w-100 login_set" th:text="#{register}" >Заєреструватись</a>
 
-    </form>
-
-    <select id="locales" class="form-select fw-weight-bold locales-reg form_login" >
+    <select id="locales" class="form-select fw-weight-bold locales-reg form_login select_style" >
         <option selected th:text="#{lang.change}" ></option>
         <option value="eng" th:text="#{lang.eng}"></option>
         <option value="ukr" th:text="#{lang.ukr}"></option>
@@ -47,6 +39,7 @@
         <option value="fn" th:text="#{lang.fn}"></option>
         <option value="ws" th:text="#{lang.sw}"></option>
     </select>
+    </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
     </script>
