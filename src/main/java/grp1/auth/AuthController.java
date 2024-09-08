@@ -1,7 +1,9 @@
 package grp1.auth;
 
+import grp1.exception.NoteAppException;
 import grp1.user.UserRequest;
 import grp1.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -20,19 +22,26 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class AuthController {
 
+    public static final String MODEL_ATTRIBUTE_USER = "user";
+    public static final String MODEL_ATTRIBUTE_ERROR = "error";
+    public static final String SESSION_ATTRIBUTE_ERROR = "error";
+
     private final UserService userService;
     @Autowired
     private MessageSource messageSource;
 
     @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("user", new UserRequest());
+    public String login(Model model, HttpServletRequest request) {
+        String errorMessage = (String) request.getSession().getAttribute(SESSION_ATTRIBUTE_ERROR);
+        request.getSession().removeAttribute(SESSION_ATTRIBUTE_ERROR);
+        model.addAttribute(MODEL_ATTRIBUTE_ERROR, errorMessage);
+        model.addAttribute(MODEL_ATTRIBUTE_USER, new UserRequest());
         return "login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("user", new UserRequest());
+        model.addAttribute(MODEL_ATTRIBUTE_USER, new UserRequest());
         return "register";
     }
 
@@ -41,9 +50,12 @@ public class AuthController {
         try {
             userService.createUser(user);
         } catch (Exception e) {
-            String localizedErrorMessage = messageSource.getMessage(e.getMessage(), null, locale);
-            model.addAttribute("error", localizedErrorMessage);
-            model.addAttribute("user", new UserRequest());
+            if (e instanceof NoteAppException nae) {
+                model.addAttribute(MODEL_ATTRIBUTE_ERROR, nae.getLocalizedMessage(messageSource, locale));
+            } else {
+                model.addAttribute(MODEL_ATTRIBUTE_ERROR, messageSource.getMessage(e.getMessage(), null, locale));
+            }
+            model.addAttribute(MODEL_ATTRIBUTE_USER, new UserRequest());
             return "register";
         }
         return "redirect:/login";
