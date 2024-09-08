@@ -12,7 +12,7 @@
     <img class="found_note_space" src="/img/welcome.png"/>
 
     <form th:action="@{/register}" th:method="post" class="mx-auto form_login">
-        <p th:text="#{error.message}" class="error_red"></p>
+        <p th:if="${error}" th:text="${error}" class="error_red"></p>
         <h1 th:text="#{registration}" class="text-center reg_text">Реєстрація</h1>
 
         <div class="form-group">
