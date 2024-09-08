@@ -1,0 +1,235 @@
+.container{
+    text-align:center;
+    vertical-align:middle;
+    color: -moz-mac-accentdarkestshadow;
+    font-family: 'Georgia';
+    font-size: large;
+}
+
+table {
+    counter-reset: bubu;
+}
+
+td:nth-child(1) {
+    counter-increment: bubu;
+}
+
+td:nth-child(1)::before {
+    content: counter(bubu);
+}
+
+h4,h4,h4 {
+    display: inline;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+
+img {
+    max-width: 1300px;
+    height: auto;
+    margin-bottom: 40px;
+}
+
+.title{
+    color: #4D378A;
+}
+
+.main_name{
+    font-size: xxx-large
+}
+
+.bold-text{
+    font-weight: bold;
+}
+
+.table thead tr.column_name th{
+    background: #FED2B9;
+    color: #0b629d
+}
+
+.locales{
+    background-color: #fff8eb;
+    color: #4D378A;
+    font-weight: bold;
+    font-size: large
+}
+
+.locales-reg{
+    background-color: #e8f7e3;
+    color: #1b6a1b;
+    font-weight: bold;
+    text-align:center;
+}
+
+.no_access{
+    padding-top: 60px;
+}
+
+.access_button_back{
+    margin-top: 10px;
+    background: #1c5686
+}
+
+.img_size{
+    max-width: 600px;
+    height: auto;
+    margin-bottom: 40px;
+}
+
+.create_text{
+    font-weight:bolder;
+    color:#96160d
+}
+
+.form_create{
+    font-weight:bolder;
+    color: #532a30
+}
+
+.font_x_large{
+    font-size: x-large
+}
+
+.form_input_color{
+    background-color: #fffdf0
+}
+
+.form_textarea_color{
+    background-color: #f9f9f6
+}
+
+.public_color{
+    color: #532a30
+}
+
+.privat_color{
+    color: #532a30
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container button {
+    flex: 1;
+    margin: 5px;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+.edit_name{
+    font-weight: bolder;
+    color: #1f57a4
+}
+
+.form_edit{
+    font-weight:bolder;
+    color: #966fae
+}
+
+.edit_text_color{
+    background-color: #f6ffff
+}
+
+.edit_textarea_color{
+    background-color: #fffefa
+}
+
+.padding_text{
+    padding-top: 60px
+}
+.error_back_color{
+    background: #1c5686
+}
+
+.found_note_space{
+    margin-bottom: 40px
+}
+
+.found_note_text{
+    margin-bottom: 5px;
+    background: #fffff5;
+    font-weight: bold;
+    text-align: center;
+    color: #194f99;
+    font-size: large
+}
+
+.found_note_textarea{
+    margin-bottom: 5px;
+    background: #fdfefb;
+    font-weight: bold;
+    text-align: center;
+    color: #1a576b;
+    font-size: large
+}
+
+.not_found_butt{
+    margin-top: 10px;
+    background: #1c5686
+}
+
+.form-container{
+    margin-top: 30px;
+}
+
+.view_h1{
+    font-size: 2.5rem;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group{
+    color: #1b6a1b;
+    font-size: large;
+    font-weight: bold
+}
+
+.form_login{
+    width: 500px
+}
+
+.login_background{
+    background-color: #d4e9f7
+}
+
+.login_text{
+    margin-top: 10px
+}
+
+.login_input_background{
+    background-color: #d7eae4
+}
+
+.login_set{
+    margin-bottom: 10px;
+    font-weight: bold
+}
+
+.error_red{
+    color:red
+}
+
+.reg_text{
+    margin-bottom:15px;
+    color: darkgoldenrod;
+    font-weight: bold;
+    font-size: xx-large
+}
+
+.reg_color_text{
+    background-color: #d4e9f7
+}
+
+.reg_text_color{
+    background-color: #d7eae4
+}

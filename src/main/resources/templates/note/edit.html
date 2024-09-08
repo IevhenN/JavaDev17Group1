@@ -4,24 +4,35 @@
     <meta charset="UTF-8">
     <title>Edit Note</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 <div class="container">
-    <h1>Edit Note</h1>
-    <form action="/note/edit" method="post" th:object="${note}">
+    <img class="img_size" src="/img/edit.png" />
+
+    <h1 th:text="#{edit.note}" class="edit_name">Edit Note</h1>
+
+    <form action="/note/edit" method="post" th:object="${note}" class="form_edit">
         <input type="hidden" th:field="*{id}">
+
         <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
+            <label for="title" th:text="#{note.name}" class="font_x_large">Title</label>
+            <input type="text" id="title" name="title" th:field="*{title}" class="form-control edit_text_color" required>
         </div>
+
         <div class="form-group">
-            <label for="content">Content</label>
-            <textarea id="content" name="content" th:field="*{content}" class="form-control" required></textarea>
+            <label for="content" th:text="#{note.text}" class="font_x_large bold-text">Content</label>
+            <textarea id="content" name="content" th:field="*{content}" class="form-control edit_textarea_color" rows="7" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+
+        <div class="button-container">
+            <button type="submit" class="btn btn-outline-success" th:text="#{save}">Save</button>
+            <button type="button" class="btn btn-outline-danger"
+                    th:onclick="|window.location.href='@{/note/list}'|" th:text="#{back}">Cancel</button>
+        </div>
     </form>
     <br>
-    <a href="/note/list" class="btn btn-secondary mt-3">Return to List</a>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

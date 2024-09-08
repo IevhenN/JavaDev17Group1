@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <title>Note Not Found</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-<div class="container text-center">
-    <h1>Нотатка не знайдена</h1>
-    <p>Ця нотатка може бути приватною або не існувати.</p>
-    <a href="/note/list" class="btn btn-primary">Повернутись до списку нотаток</a>
+<div class="container">
+    <img src="/img/error.png" />
+
+    <h1 th:text="#{not.found}" class="padding_text">Нотатка не знайдена</h1>
+
+    <p th:text="#{error.msg}">Ця нотатка може бути приватною або не існувати.</p>
+
+    <a href="/note/list" class="btn btn-primary not_found_butt" th:text="#{back}">Повернутись до списку нотаток</a>
 </div>
 </body>
 </html>

@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <title>Error</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 <div class="container">
+    <img src="/img/error.png" />
+
     <div class="form-group">
-        <h1 class="text-center">Помилка!</h1>
-        <p th:text="${error}" style="color:black"></p>
-        <div class="py-2 w-100">
-            <a href="/note/list" class="btn btn-outline-primary w-100">Повернутись до списку нотаток</a>
+        <h1 class="padding_text" th:text="#{error}">Error!</h1>
+
+        <div class="py-2">
+            <a th:text="#{back}" href="/note/list" class="btn btn-primary error_back_color">Повернутись до списку нотаток</a>
         </div>
     </div>
 </div>
