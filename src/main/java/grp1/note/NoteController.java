@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -206,14 +207,20 @@ public class NoteController {
     }
 
     @GetMapping("/found-noteslist/{content}")
-    public String viewNotesByContentList(@PathVariable("content") String content, Model model){
+    public String viewNotesByContentList(@PathVariable("content") String content, Model model) {
         User currentUser = userService.getCurrentUser();
+        List<Note> resultNote = new ArrayList<>();
         if (currentUser == null) {
             return "redirect:/login";
         }
         List<Note> userNotes = noteService.listNoteByContent(content);
+        for (Note note : userNotes) {
+            if (note.getAccessType().equals(AccessType.PUBLIC) || note.getUser().equals(currentUser)) {
+                resultNote.add(note);
+            }
+        }
 
-        model.addAttribute("notes", userNotes);
+        model.addAttribute("notes", resultNote);
 
         return "note/list";
 
