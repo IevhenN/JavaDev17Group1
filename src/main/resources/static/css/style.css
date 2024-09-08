@@ -163,6 +163,7 @@ img {
     font-size: large
 }
 
+
 .found_note_textarea{
     margin-bottom: 5px;
     background: #fdfefb;
@@ -232,4 +233,17 @@ img {
 
 .reg_text_color{
     background-color: #d7eae4
+}
+
+.scalable{
+    max-height: 40vh;
+}
+
+.scalable_element {
+    max-height: 10vh;
+}
+
+.select_style{
+    padding: 10px;
+    font-size: 16px;
 }

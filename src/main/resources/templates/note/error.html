@@ -9,13 +9,13 @@
 
 <body>
 <div class="container">
-    <img src="/img/error.png" />
+    <img class="scalable" src="/img/error.png" />
 
-    <div class="form-group">
+    <div class="form-group scalable">
         <h1 class="padding_text" th:text="#{error}">Error!</h1>
 
         <div class="py-2">
-            <a th:text="#{back}" href="/note/list" class="btn btn-primary error_back_color">Повернутись до списку нотаток</a>
+            <a th:text="#{back}" href="/note/list" class="btn btn-primary error_back_color ">Повернутись до списку нотаток</a>
         </div>
     </div>
 </div>
