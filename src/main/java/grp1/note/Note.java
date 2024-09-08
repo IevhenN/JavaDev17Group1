@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,5 +38,7 @@ public class Note {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccessType accessType = AccessType.PRIVATE;
+
+    private String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
 
 }

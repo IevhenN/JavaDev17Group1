@@ -2,14 +2,15 @@ package grp1.user;
 
 import grp1.note.Note;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @ToString(exclude = "notes")
 @NoArgsConstructor
 @Entity
@@ -19,8 +20,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
+    @Size(min = 5, max = 50, message = "{error.username.empty}")
+    @NotEmpty(message = "{error.username.empty}")
     private String username;
+
     @Column
+    @Size(min = 8, max = 100, message = "{error.password.empty}")
+    @NotEmpty(message = "{error.username.empty}")
     private String password;
     @Column
     private boolean enabled = true;

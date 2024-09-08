@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS note (
     title VARCHAR(100) NOT NULL CHECK (LENGTH(title) BETWEEN 5 AND 100),
     content TEXT NOT NULL CHECK (LENGTH(content) BETWEEN 5 AND 10000),
     access_type VARCHAR(10) NOT NULL,
+    date VARCHAR(20),
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

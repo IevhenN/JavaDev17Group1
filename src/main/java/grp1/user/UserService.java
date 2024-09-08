@@ -43,10 +43,10 @@ public class UserService {
 
     private void validateUser(UserRequest userRequest) {
         if(userRequest.getUsername().length() < USER_NAME_MIN_LENGTH || userRequest.getUsername().length() >= USER_NAME_MAX_LENGTH) {
-            throw new IllegalArgumentException(format("Username must be between {0} and {1} characters", USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH));
+            throw new IllegalArgumentException(format("error.username.empty"));
         }
         if(userRequest.getPassword().length() < USER_PASS_MIN_LENGTH || userRequest.getPassword().length() >= USER_PASS_MAX_LENGTH) {
-            throw new IllegalArgumentException(format("Password must be between {0} and {1} characters", USER_PASS_MIN_LENGTH, USER_PASS_MAX_LENGTH));
+            throw new IllegalArgumentException(format("error.password.empty"));
         }
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             throw new IllegalArgumentException(format("User with that name {0} already exists", userRequest.getUsername()));

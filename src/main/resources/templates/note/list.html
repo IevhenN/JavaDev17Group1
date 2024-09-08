@@ -3,52 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>List notes</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
+
 <div class="container">
-    <h1>Notes list</h1>
-    <h4>My notes - <span th:text="${notes.size()}"></span> шт.</h4>
-    <ul class="list-group">
-        <li th:each="note : ${notes}" class="list-group-item d-flex justify-content-between align-items-start">
-            <div>
-                <a th:href="@{/note/view/{id}(id=${note.id})}" class="text-decoration-none">
-                    <strong th:text="${note.title}"></strong><br>
-                    <span th:text="${note.content}"></span><br>
-                </a>
-                <span th:text="${note.accessType == T(grp1.note.AccessType).PUBLIC ? 'Public' : 'Private'}"
-                      class="badge badge-info mt-2"></span>
-            </div>
-            <div class="d-flex align-items-start">
-                <form action="/note/edit" method="get" class="d-inline mr-2">
-                    <input type="hidden" name="id" th:value="${note.id}">
-                    <button type="submit" class="btn btn-primary btn-sm">Edit</button>
-                </form>
-                <form action="/note/delete" method="post" class="d-inline mr-2">
-                    <input type="hidden" name="id" th:value="${note.id}">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-                <button type="button" class="btn btn-secondary btn-sm"
-                        th:data-note-id="${note.id}"
-                        onclick="copyToClipboard(this.getAttribute('data-note-id'))">Copy Link</button>
-            </div>
-        </li>
-    </ul>
-    <a href="/note/create" class="btn btn-success mt-3">Add note</a>
+    <img src="/img/top.png" />
+
+    <div class="header-container">
+        <div class="title">
+            <h4 class="main_name bold-text" th:text="#{my.notes}">My notes</h4>
+            <h4> - <span th:text="${notes.size()}"></span></h4>
+            <h4 th:text="#{pieces}"> pieces</h4>
+        </div>
+        <a th:href="@{/note/create}" class="btn btn-outline-primary bold-text" th:text="#{create.new.note}">Add note</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr class="column_name">
+            <th>#</th>
+            <th th:text="#{created.at}">Created At</th>
+            <th th:text="#{name}">Ім'я</th>
+            <th th:text="#{content}">Вміст</th>
+            <th th:text="#{access}">Доступ</th>
+            <th th:text="#{action}">Дії</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="note : ${notes}" >
+
+                <td></td>
+                <td th:text="${note.date}" >Date</td>
+                <td th:text="${note.title}" >Title</td>
+                <td th:text="${note.content}">Content</td>
+                <td th:text="${note.accessType}" >Access</td>
+                <td >
+                    <button type="button" class="btn btn-outline-info bold-text" th:text="#{link}"
+                            th:data-note-id="${note.id}"
+                            th:onclick="|window.location.href='@{/note/share/{id}(id = ${note.id})}'|">Copy Link</button>
+                    <form action="/note/edit" method="get" class="d-inline mr-2">
+                        <input type="hidden" name="id" th:value="${note.id}">
+                        <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
+                    </form>
+                    <form action="/note/delete" method="post" class="d-inline mr-2">
+                        <input type="hidden" name="id" th:value="${note.id}">
+                        <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
+                                th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <select id="locales" class="form-select fw-weight-bold locales" >
+        <option selected th:text="#{lang.change}" ></option>
+        <option value="eng" th:text="#{lang.eng}"></option>
+        <option value="ukr" th:text="#{lang.ukr}"></option>
+        <option value="fr" th:text="#{lang.fr}"></option>
+        <option value="de" th:text="#{lang.de}"></option>
+        <option value="pl" th:text="#{lang.pl}"></option>
+        <option value="sp" th:text="#{lang.sp}"></option>
+        <option value="it" th:text="#{lang.it}"></option>
+        <option value="dt" th:text="#{lang.dt}"></option>
+        <option value="fn" th:text="#{lang.fn}"></option>
+        <option value="ws" th:text="#{lang.sw}"></option>
+    </select>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption != ''){
+                    window.location.replace('list?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+    <img src="/img/bottom.png" />
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    function copyToClipboard(noteId) {
-        const link = `${window.location.origin}/note/share/${noteId}`;
-        navigator.clipboard.writeText(link).then(() => {
-            alert('Link copied to clipboard: ' + link);
-        }).catch(err => {
-            console.error('Could not copy text: ', err);
-        });
-    }
-</script>
 </body>
 </html>

@@ -3,6 +3,8 @@ package grp1.auth;
 import grp1.user.UserRequest;
 import grp1.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -18,6 +21,8 @@ import java.security.Principal;
 public class AuthController {
 
     private final UserService userService;
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -32,11 +37,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerSubmit(@ModelAttribute UserRequest user, Model model) {
+    public String registerSubmit(@ModelAttribute UserRequest user, Model model, Locale locale) {
         try {
             userService.createUser(user);
         } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
+            String localizedErrorMessage = messageSource.getMessage(e.getMessage(), null, locale);
+            model.addAttribute("error", localizedErrorMessage);
             model.addAttribute("user", new UserRequest());
             return "register";
         }
