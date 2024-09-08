@@ -17,8 +17,9 @@
 <body>
 <div class="container">
     <img class="found_note_space" src="/img/welcome.png" />
-
-    <form th:action="@{/login}" th:method="post" class="mx-auto form_login">
+    <form th:action="@{/login}" th:method="post" style="width: 500px;" class="mx-auto">
+        <p th:text="${error}" style="color:red"></p>
+        <h1 class="text-center">Вхід</h1>
         <div class="form-group">
             <label th:text="#{login}" for="username">Логін</label>
             <input type="text" class="form-control login_background" id="username" name="username" th:value="${user.username}"

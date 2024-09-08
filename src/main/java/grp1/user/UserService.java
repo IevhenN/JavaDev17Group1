@@ -1,11 +1,13 @@
 package grp1.user;
 
+import grp1.exception.NoteAppException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,20 +44,32 @@ public class UserService {
     }
 
     private void validateUser(UserRequest userRequest) {
+        validateUserParams(userRequest);
+        if (userRepository.existsByUsername(userRequest.getUsername())) {
+            throw new NoteAppException("error.username.exists", userRequest.getUsername());
+        }
+    }
+
+    private void validateUserParams(UserRequest userRequest) {
         if(userRequest.getUsername().length() < USER_NAME_MIN_LENGTH || userRequest.getUsername().length() >= USER_NAME_MAX_LENGTH) {
-            throw new IllegalArgumentException(format("error.username.empty"));
+            throw new NoteAppException("error.username.empty", USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH);
         }
         if(userRequest.getPassword().length() < USER_PASS_MIN_LENGTH || userRequest.getPassword().length() >= USER_PASS_MAX_LENGTH) {
-            throw new IllegalArgumentException(format("error.password.empty"));
+            throw new NoteAppException("error.password.empty", USER_PASS_MIN_LENGTH, USER_PASS_MAX_LENGTH);
         }
-        if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new IllegalArgumentException(format("User with that name {0} already exists", userRequest.getUsername()));
+    }
+
+    public void validateExistedUser(UserRequest userRequest) {
+        validateUserParams(userRequest);
+        User user = userRepository.findByUsername(userRequest.getUsername()).orElseThrow(() -> new NoteAppException("error.user.not_found", userRequest.getUsername()));
+        if (!passwordEncoder.matches(userRequest.getPassword(), user.getPassword())) {
+            throw new NoteAppException("error.password.invalid");
         }
     }
 
     public User findByName(String username) {
         Optional<User> byUsername = userRepository.findByUsername(username);
-        return byUsername.orElseThrow();
+        return byUsername.orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     public String getCurrentUsername() {
