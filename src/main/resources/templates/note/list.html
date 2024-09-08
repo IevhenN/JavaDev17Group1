@@ -39,7 +39,9 @@
 
                 <td class="scalable_element"></td>
                 <td class="scalable_element" th:text="${note.date}" >Date</td>
-                <td class="scalable_element" th:text="${note.title}" >Title</td>
+                <td class="scalable_element">
+                    <a th:href="@{/note/view/{id}(id=${note.id})}" th:text="${note.title}">Title</a>
+                </td>
                 <td class="scalable_element" th:text="${note.content}">Content</td>
                 <td class="scalable_element" th:text="${note.accessType}" >Access</td>
                 <td >
