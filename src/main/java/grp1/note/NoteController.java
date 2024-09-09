@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -163,6 +164,10 @@ public class NoteController {
     public String getDenied(Model model) {
         return "note/access-denied";
     }
+    @GetMapping("/test")
+    public String getTest(Model model) {
+        return "note/error";
+    }
 
     @GetMapping("/view/{id}")
     public String viewNote(@PathVariable("id") String noteId, Model model) {
@@ -206,14 +211,20 @@ public class NoteController {
     }
 
     @GetMapping("/found-noteslist/{content}")
-    public String viewNotesByContentList(@PathVariable("content") String content, Model model){
+    public String viewNotesByContentList(@PathVariable("content") String content, Model model) {
         User currentUser = userService.getCurrentUser();
+        List<Note> resultNote = new ArrayList<>();
         if (currentUser == null) {
             return "redirect:/login";
         }
         List<Note> userNotes = noteService.listNoteByContent(content);
+        for (Note note : userNotes) {
+            if (note.getUser().equals(currentUser)) {
+                resultNote.add(note);
+            }
+        }
 
-        model.addAttribute("notes", userNotes);
+        model.addAttribute("notes", resultNote);
 
         return "note/list";
 
