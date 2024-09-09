@@ -164,6 +164,10 @@ public class NoteController {
     public String getDenied(Model model) {
         return "note/access-denied";
     }
+    @GetMapping("/test")
+    public String getTest(Model model) {
+        return "note/error";
+    }
 
     @GetMapping("/view/{id}")
     public String viewNote(@PathVariable("id") String noteId, Model model) {
@@ -215,7 +219,7 @@ public class NoteController {
         }
         List<Note> userNotes = noteService.listNoteByContent(content);
         for (Note note : userNotes) {
-            if (note.getAccessType().equals(AccessType.PUBLIC) || note.getUser().equals(currentUser)) {
+            if (note.getUser().equals(currentUser)) {
                 resultNote.add(note);
             }
         }
