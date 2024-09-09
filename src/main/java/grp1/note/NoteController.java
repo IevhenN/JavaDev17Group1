@@ -1,5 +1,6 @@
 package grp1.note;
 
+import grp1.config.Constant;
 import grp1.user.User;
 import grp1.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -56,6 +57,11 @@ public class NoteController {
             return "redirect:/login";
         }
         note.setUser(user);
+
+        if (note.getColor().equals(Constant.WHITE_COLOR)){
+            note.setColor(null);
+        }
+
         if (!saveNote(note, redirectAttributes)) {
             return REDIRECT_NOTE_ERROR;
         }
@@ -99,7 +105,12 @@ public class NoteController {
                 return "redirect:/note/denied";
             }
 
+            if (note.getColor()==null){
+                note.setColor(Constant.WHITE_COLOR);
+            }
+
             model.addAttribute("note", note);
+            System.out.println("COLOR "+note.getColor());
             return "note/edit";
         } else {
 
@@ -114,12 +125,17 @@ public class NoteController {
             return "redirect:/login";
         }
 
+        if (note.getColor().equals(Constant.WHITE_COLOR)){
+            note.setColor(null);
+        }
+
         Optional<Note> existingNoteOptional = noteService.getById(note.getId());
         if (existingNoteOptional.isPresent()) {
             Note existingNote = existingNoteOptional.get();
             existingNote.setTitle(note.getTitle());
             existingNote.setContent(note.getContent());
             existingNote.setAccessType(note.getAccessType());
+            existingNote.setColor(note.getColor());
             if (!saveNote(existingNote, redirectAttributes)) {
                 return REDIRECT_NOTE_ERROR;
             }

@@ -1,0 +1,2 @@
+ALTER TABLE note
+ADD color VARCHAR(7);

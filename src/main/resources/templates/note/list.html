@@ -37,6 +37,7 @@
         <thead>
         <tr class="column_name scalable_element">
             <th class="scalable_element">#</th>
+            <th class="scalable_element">#</th>
             <th class="scalable_element" th:text="#{created.at}">Created At</th>
             <th class="scalable_element" th:text="#{name}">Ім'я</th>
             <th class="scalable_element" th:text="#{content}">Вміст</th>
@@ -49,6 +50,9 @@
             <tr class="scalable_element" th:each="note : ${notes}" >
 
                 <td class="scalable_element"></td>
+                <td>
+                    <div th:style="'width: 100px; height: 20px; background-color: ' + ${note.color}"></div>
+                </td>
                 <td class="scalable_element" th:text="${note.date}" >Date</td>
                 <td class="scalable_element">
                     <a th:href="@{/note/view/{id}(id=${note.id})}" th:text="${note.title}">Title</a>

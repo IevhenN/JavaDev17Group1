@@ -1,9 +1,11 @@
 package grp1.note;
 
+import grp1.config.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.text.MessageFormat.format;
@@ -31,7 +33,9 @@ public class NoteService {
     }
 
     public void save(Note note) {
+
         validateNote(note);
+
         noteRepository.save(note);
     }
 
