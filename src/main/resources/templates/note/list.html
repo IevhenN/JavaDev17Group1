@@ -4,83 +4,74 @@
     <meta charset="UTF-8">
     <title>List notes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
 <div class="container">
-    <img src="/img/top.png"/>
+    <img class="scalable" src="/img/top.png" />
 
     <div class="header-container">
         <div class="title">
-            <h4 class="main_name bold-text" th:text="#{my.notes}">My notes</h4>
-            <h4> - <span th:text="${notes.size()}"></span></h4>
-            <h4 th:text="#{pieces}"> pieces</h4>
+            <h4 class="main_name bold-text scalable_element" th:text="#{my.notes}">My notes</h4>
+            <h4 class="scalable_element"> - <span th:text="${notes.size()}"></span></h4>
+            <h4 class="scalable_element" th:text="#{pieces}"> pieces</h4>
         </div>
-        <a th:href="@{/note/create}" class="btn btn-outline-primary bold-text" th:text="#{create.new.note}">Add note</a>
-
 
         <form action="/note/found-noteslist/" method="get">
             <input type="text" name="title" class="btn btn-outline-primary bold-text">
             <input type="submit" value="Search" class="btn btn-outline-primary bold-text">
         </form>
+        <a th:href="@{/note/create}" class="btn btn-outline-primary bold-text scalable_element" th:text="#{create.new.note}">Add note</a>
 
     </div>
 
-    </script>
-    <script type="text/javascript">
-        document.querySelector('form').addEventListener("submit", function (e) {
-            e.preventDefault()
-            let param = document.querySelector('input[name="title"]').value
-            window.location.href = 'http://localhost:9999/note/found-noteslist/' + param
-        })
-    </script>
+    <table class="table table-striped scalable">
 
-    <table class="table table-striped">
+
         <thead>
-        <tr class="column_name">
-            <th>#</th>
-            <th th:text="#{created.at}">Created At</th>
-            <th th:text="#{name}">Ім'я</th>
-            <th th:text="#{content}">Вміст</th>
-            <th th:text="#{access}">Доступ</th>
-            <th th:text="#{action}">Дії</th>
+        <tr class="column_name scalable_element">
+            <th class="scalable_element">#</th>
+            <th class="scalable_element" th:text="#{created.at}">Created At</th>
+            <th class="scalable_element" th:text="#{name}">Ім'я</th>
+            <th class="scalable_element" th:text="#{content}">Вміст</th>
+            <th class="scalable_element" th:text="#{access}">Доступ</th>
+            <th class="scalable_element" th:text="#{action}">Дії</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="note : ${notes}">
+            <tr class="scalable_element" th:each="note : ${notes}" >
 
-            <td></td>
-            <td th:text="${note.date}">Date</td>
-            <td th:text="${note.title}">Title</td>
-            <td th:text="${note.content}">Content</td>
-            <td th:text="${note.accessType}">Access</td>
-            <td>
-                <button type="button" class="btn btn-outline-info bold-text" th:text="#{link}"
-                        th:data-note-id="${note.id}"
-                        th:onclick="|window.location.href='@{/note/share/{id}(id = ${note.id})}'|">Copy Link
-                </button>
-                <form action="/note/edit" method="get" class="d-inline mr-2">
-                    <input type="hidden" name="id" th:value="${note.id}">
-                    <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
-                </form>
-                <form action="/note/delete" method="post" class="d-inline mr-2">
-                    <input type="hidden" name="id" th:value="${note.id}">
-                    <button type="submit" class="btn btn-outline-danger bold-text" th:text="#{delete}"
-                            th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete
-                    </button>
-                </form>
-            </td>
-        </tr>
+                <td class="scalable_element"></td>
+                <td class="scalable_element" th:text="${note.date}" >Date</td>
+                <td class="scalable_element">
+                    <a th:href="@{/note/view/{id}(id=${note.id})}" th:text="${note.title}">Title</a>
+                </td>
+                <td class="scalable_element" th:text="${note.content}">Content</td>
+                <td class="scalable_element" th:text="${note.accessType}" >Access</td>
+                <td >
+                    <button type="button" class="btn btn-outline-info bold-text scalable_element"
+                            th:data-note-id="${note.id}"
+                            onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{link}">Copy Link</button>
+                    <form action="/note/edit" method="get" class="d-inline mr-2 scalable_element">
+                        <input type="hidden" name="id" th:value="${note.id}">
+                        <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
+                    </form>
+                    <form action="/note/delete" method="post" class="d-inline mr-2 scalable_element">
+                        <input type="hidden" name="id" th:value="${note.id}">
+                        <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
+                                th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
+                    </form>
+                </td>
+            </tr>
         </tbody>
     </table>
 
-    <select id="locales" class="form-select fw-weight-bold locales">
-        <option selected th:text="#{lang.change}"></option>
+    <select id="locales" class="form-select fw-weight-bold locales scalable_element" >
+        <option selected th:text="#{lang.change}" ></option>
         <option value="eng" th:text="#{lang.eng}"></option>
         <option value="ukr" th:text="#{lang.ukr}"></option>
         <option value="fr" th:text="#{lang.fr}"></option>
@@ -96,16 +87,36 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
     </script>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#locales").change(function () {
                 var selectedOption = $('#locales').val();
-                if (selectedOption != '') {
+                if (selectedOption != ''){
                     window.location.replace('list?lang=' + selectedOption);
                 }
             });
         });
     </script>
-    <img src="/img/bottom.png"/>
+    <script th:inline="javascript">
+        function copyToClipboard(noteId) {
+            const link = `${window.location.origin}/note/share/${noteId}`;
+            const copiedMessage = /*[[#{link.copied}]]*/ 'Link copied to clipboard: ';
+            const errorMessage = /*[[#{link.copy.error}]]*/ 'Could not copy text: ';
+            navigator.clipboard.writeText(link).then(() => {
+                alert(copiedMessage + link);
+            }).catch(err => {
+                console.error(errorMessage, err);
+            });
+        }
+    </script>
+    </script>
+    <script type="text/javascript">
+        document.querySelector('form').addEventListener("submit", function (e) {
+            e.preventDefault()
+            let param = document.querySelector('input[name="title"]').value
+            window.location.href = 'http://localhost:9999/note/found-noteslist/' + param
+        })
+    </script>
+    <img class="scalable_element" src="/img/bottom.png" />
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

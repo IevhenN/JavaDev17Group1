@@ -9,13 +9,13 @@
 
 <body>
 <div class="container">
-    <img src="/img/error.png" />
+    <img class="scalable" src="/img/error.png" />
 
-    <h1 th:text="#{not.found}" class="padding_text">Нотатка не знайдена</h1>
+    <h1 th:text="#{not.found}" class="padding_text scalable_element">Нотатка не знайдена</h1>
 
-    <p th:text="#{error.msg}">Ця нотатка може бути приватною або не існувати.</p>
+    <p th:text="#{error.msg}" class="scalable_element">Ця нотатка може бути приватною або не існувати.</p>
 
-    <a href="/note/list" class="btn btn-primary not_found_butt" th:text="#{back}">Повернутись до списку нотаток</a>
+    <a href="/note/list" class="btn btn-primary not_found_butt scalable_element" th:text="#{back}">Повернутись до списку нотаток</a>
 </div>
 </body>
 </html>

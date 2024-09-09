@@ -11,9 +11,9 @@
 
 <body>
 <div class="container">
-    <img class="found_note_space" src="/img/see.jpg"/>
+    <img class="found_note_space scalable" src="/img/see.jpg"/>
 
-    <form method="get" class="form-container" th:object="${note}">
+    <form method="get" class="form-container scalable" th:object="${note}">
         <fieldset disabled>
             <input class="form-control form-control-lg found_note_text" type="text" th:field="*{title}">
             <textarea class="form-control found_note_textarea" id="textArea" name="textArea" rows="5" th:field="*{content}"></textarea>
