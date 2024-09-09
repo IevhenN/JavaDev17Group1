@@ -45,9 +45,6 @@ public class NoteService {
         return noteRepository.findByIdAndUsername(id, username);
     }
 
-    public Optional<Note> getNoteByContent(String content) {
-        return noteRepository.findbyContent("%" + content + "%");
-    }
 
     private void validateNote(Note note) {
         if (note.getTitle().length() < NOTE_TITLE_MIN_LENGTH || note.getTitle().length() >= NOTE_TITLE_MAX_LENGTH) {
@@ -63,8 +60,9 @@ public class NoteService {
         return noteRepository.findByUserId(userID);
     }
 
-    public List<Note> listNoteByContent(String content){
-        return noteRepository.findbyContentList("%" + content + "%");
+    public List<Note> listNoteByContent(Long userId, String content){
+        return noteRepository.findbyContentList(userId,"%" + content + "%");
     }
+
 
 }

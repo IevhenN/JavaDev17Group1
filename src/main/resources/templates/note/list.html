@@ -19,15 +19,18 @@
             <h4 class="scalable_element"> - <span th:text="${notes.size()}"></span></h4>
             <h4 class="scalable_element" th:text="#{pieces}"> pieces</h4>
         </div>
-
-        <form action="/note/found-noteslist/" method="get">
-            <input type="text" name="title" class="btn btn-outline-primary bold-text">
-            <input type="submit" value="Search" class="btn btn-outline-primary bold-text">
-        </form>
         <a th:href="@{/note/create}" class="btn btn-outline-primary bold-text scalable_element" th:text="#{create.new.note}">Add note</a>
 
     </div>
+    <div>
+        <form action="/note/list" method="get" class="d-flex mb-3">
+            <input type="text" name="title" class="form-control me-2" >
+            <button type="submit" class="btn btn-outline-primary me-2">Search</button>
+            <a href="/note/list" class="btn btn-outline-primary me-2" >Clear</a>
 
+        </form>
+    </div>
+    <br>
     <table class="table table-striped scalable">
 
 
@@ -108,14 +111,7 @@
             });
         }
     </script>
-    </script>
-    <script type="text/javascript">
-        document.querySelector('form').addEventListener("submit", function (e) {
-            e.preventDefault()
-            let param = document.querySelector('input[name="title"]').value
-            window.location.href = 'http://localhost:9999/note/found-noteslist/' + param
-        })
-    </script>
+
     <img class="scalable_element" src="/img/bottom.png" />
 </div>
 
