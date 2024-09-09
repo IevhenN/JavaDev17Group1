@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,17 +24,21 @@ public class NoteController {
     private final UserService userService;
 
     @GetMapping("/list")
-    public String getNoteList(Model model) {
+    public String getNoteList(@RequestParam(value = "title", required = false) String title,
+                              Model model) {
         User currentUser = userService.getCurrentUser();
 
         if (currentUser == null) {
             return "redirect:/login";
         }
-
-        List<Note> userNotes = noteService.findByUserId(currentUser.getId());
-
-        model.addAttribute("notes", userNotes);
-
+        List<Note> userNotes = new ArrayList<>();
+        if (title != null) {
+            userNotes = noteService.listNoteByContent(currentUser.getId(), title);
+            model.addAttribute("notes", userNotes);
+        } else {
+            userNotes = noteService.findByUserId(currentUser.getId());
+            model.addAttribute("notes", userNotes);
+        }
         return "note/list";
     }
 
@@ -164,10 +167,7 @@ public class NoteController {
     public String getDenied(Model model) {
         return "note/access-denied";
     }
-    @GetMapping("/test")
-    public String getTest(Model model) {
-        return "note/error";
-    }
+
 
     @GetMapping("/view/{id}")
     public String viewNote(@PathVariable("id") String noteId, Model model) {
@@ -190,44 +190,4 @@ public class NoteController {
     public String notFound(Model model) {
         return "note/note-notfound";
     }
-
-    @GetMapping("/found-notes/{content}")
-    public String viewNotesByContent(@PathVariable("content") String content, Model model) {
-        Note note = new Note();
-        User currentUser = userService.getCurrentUser();
-        Optional<Note> optionalNote = noteService.getNoteByContent(content);
-
-        if (optionalNote.isPresent()) {
-            note = optionalNote.get();
-        }
-        if (optionalNote.isEmpty()) {
-            return "redirect:/note/notfound";
-        }
-        if (note.getAccessType().equals(AccessType.PRIVATE) && !note.getUser().equals(currentUser)) {
-            return "redirect:/note/denied";
-        }
-        model.addAttribute("note", note);
-        return "note/found-notes";
-    }
-
-    @GetMapping("/found-noteslist/{content}")
-    public String viewNotesByContentList(@PathVariable("content") String content, Model model) {
-        User currentUser = userService.getCurrentUser();
-        List<Note> resultNote = new ArrayList<>();
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
-        List<Note> userNotes = noteService.listNoteByContent(content);
-        for (Note note : userNotes) {
-            if (note.getUser().equals(currentUser)) {
-                resultNote.add(note);
-            }
-        }
-
-        model.addAttribute("notes", resultNote);
-
-        return "note/list";
-
-    }
-
 }
