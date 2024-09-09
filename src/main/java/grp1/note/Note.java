@@ -1,5 +1,6 @@
 package grp1.note;
 
+import grp1.config.Constant;
 import grp1.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -40,5 +41,8 @@ public class Note {
     private AccessType accessType = AccessType.PRIVATE;
 
     private String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+
+    @Column(length = 7, nullable = true)
+    private String color = Constant.WHITE_COLOR;
 
 }
