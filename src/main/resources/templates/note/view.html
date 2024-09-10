@@ -9,18 +9,19 @@
 
 <body>
 <div class="container">
-    <img class="found_note_space scalable" src="/img/see.png"/>
 
-    <h1 class="view_h1 scalable_element" th:text="#{view.note}">View Note</h1>
+    <img class="scalable" src="/img/see.jpg" />
+
+    <h1 class="edit_name scalable_element" th:text="#{view.note}">View Note</h1>
 
     <form method="get" class="form-container" th:object="${note}">
         <fieldset disabled>
-            <input class="form-control form-control-lg mb-3 found_note_text scalable_element" type="text" th:field="*{title}">
-            <textarea class="form-control mb-3 found_note_textarea scalable_element" id="textArea" name="textArea" rows="5" th:field="*{content}"></textarea>
+            <input class="form-control form-control-lg mb-3 found_note_text scalable_element" type="text" th:field="*{title}" style="background-color: #fffff5" />
+            <textarea class="form-control mb-3 found_note_textarea scalable_element" id="textArea" name="textArea" rows="5" th:field="*{content}" style="background-color: #fdfefb"></textarea>
         </fieldset>
 
         <div class="d-grid gap-2">
-            <button th:text="#{back}" type="button" class="btn btn-outline-primary scalable_element" th:onclick="|window.location.href='@{/note/list}'|" >
+            <button th:text="#{back}" type="button" class="btn btn-outline-success scalable_element bold-text" th:onclick="|window.location.href='@{/note/list}'|" >
                To note list
             </button>
         </div>
