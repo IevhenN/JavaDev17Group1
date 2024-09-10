@@ -21,7 +21,6 @@ import java.util.Locale;
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class AuthController {
-
     public static final String MODEL_ATTRIBUTE_USER = "user";
     public static final String MODEL_ATTRIBUTE_ERROR = "error";
     public static final String SESSION_ATTRIBUTE_ERROR = "error";
@@ -68,5 +67,4 @@ public class AuthController {
         }
         return "redirect:/login";
     }
-
 }

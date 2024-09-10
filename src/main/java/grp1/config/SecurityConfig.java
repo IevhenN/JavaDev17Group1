@@ -21,17 +21,16 @@ import org.springframework.web.servlet.LocaleResolver;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService, AuthenticationFailureHandler failureHandler) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers("/note/**").authenticated()
-                                .requestMatchers(HttpMethod.GET,"/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 .requestMatchers("/register").permitAll()
                                 .anyRequest().permitAll()
-                                )
+                )
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login").failureHandler(failureHandler).permitAll())
                 .csrf(AbstractHttpConfigurer::disable)

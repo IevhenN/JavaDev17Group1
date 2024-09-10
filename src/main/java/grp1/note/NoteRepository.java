@@ -1,22 +1,17 @@
 package grp1.note;
 
+import grp1.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface NoteRepository extends JpaRepository<Note, String> {
 
-    @Query("SELECT n FROM Note n WHERE n.id = :id AND n.user.username = :username")
-    Optional<Note> findByIdAndUsername(@Param("id") String id, @Param("username") String username);
-
-    @Query("from Note  n where (n.title like :query or n.content like :query) and (n.user.id = :userId)")
+    @Query("from Note  n where (lower(n.title) like lower(:query) or lower(n.content) like lower(:query)) and (n.user.id = :userId)")
     List<Note> findbyContentList(@Param("userId") Long userId, @Param("query") String query);
 
-    @Query("SELECT n FROM Note n WHERE n.user.id = :userId")
-    List<Note> findByUserId(@Param("userId") Long userId);
-
+    List<Note> findByUser(User user);
 }
 

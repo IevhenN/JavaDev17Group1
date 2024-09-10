@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NoteController {
     private static final String REDIRECT_NOTE_ERROR = "redirect:error";
+    private static final String REDIRECT_NOTE_LIST = "redirect:/note/list";
+    private static final String REDIRECT_NOTE_DENIED = "redirect:/note/denied";
+    private static final String REDIRECT_LOGIN = "redirect:/login";
     private static final String NOTE_ERROR_ATTRIBUTE = "error";
     private final NoteService noteService;
     private final UserService userService;
@@ -30,14 +32,14 @@ public class NoteController {
         User currentUser = userService.getCurrentUser();
 
         if (currentUser == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
-        List<Note> userNotes = new ArrayList<>();
+        List<Note> userNotes;
         if (title != null) {
             userNotes = noteService.listNoteByContent(currentUser.getId(), title);
             model.addAttribute("notes", userNotes);
         } else {
-            userNotes = noteService.findByUserId(currentUser.getId());
+            userNotes = noteService.findByUser(currentUser);
             model.addAttribute("notes", userNotes);
         }
         return "note/list";
@@ -54,11 +56,11 @@ public class NoteController {
     public String createNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes) {
         User user = userService.getCurrentUser();
         if (user == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
         note.setUser(user);
 
-        if (note.getColor().equals(Constant.WHITE_COLOR)){
+        if (note.getColor().equals(Constant.WHITE_COLOR)) {
             note.setColor(null);
         }
 
@@ -66,26 +68,26 @@ public class NoteController {
             return REDIRECT_NOTE_ERROR;
         }
 
-        return "redirect:/note/list";
+        return REDIRECT_NOTE_LIST;
     }
 
     @PostMapping("/delete")
     public String noteDelete(@RequestParam String id, HttpServletResponse response) throws IOException {
         User currentUser = userService.getCurrentUser();
         if (currentUser == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
 
         Optional<Note> optionalNote = noteService.getById(id);
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
             if (!note.getUser().equals(currentUser)) {
-                return "redirect:/note/denied";
+                return REDIRECT_NOTE_DENIED;
             }
             noteService.deleteById(id);
         }
 
-        return "redirect:/note/list";
+        return REDIRECT_NOTE_LIST;
     }
 
     @GetMapping("/edit")
@@ -93,7 +95,7 @@ public class NoteController {
         User currentUser = userService.getCurrentUser();
 
         if (currentUser == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
 
         Optional<Note> optionalNote = noteService.getById(id);
@@ -102,19 +104,18 @@ public class NoteController {
             Note note = optionalNote.get();
 
             if (!note.getUser().equals(currentUser)) {
-                return "redirect:/note/denied";
+                return REDIRECT_NOTE_DENIED;
             }
 
-            if (note.getColor()==null){
+            if (note.getColor() == null) {
                 note.setColor(Constant.WHITE_COLOR);
             }
 
             model.addAttribute("note", note);
-            System.out.println("COLOR "+note.getColor());
             return "note/edit";
         } else {
 
-            return "redirect:/note/list";
+            return REDIRECT_NOTE_LIST;
         }
     }
 
@@ -122,10 +123,10 @@ public class NoteController {
     public String noteSave(@ModelAttribute Note note, RedirectAttributes redirectAttributes) {
         User currentUser = userService.getCurrentUser();
         if (currentUser == null) {
-            return "redirect:/login";
+            return REDIRECT_LOGIN;
         }
 
-        if (note.getColor().equals(Constant.WHITE_COLOR)){
+        if (note.getColor().equals(Constant.WHITE_COLOR)) {
             note.setColor(null);
         }
 
@@ -140,12 +141,10 @@ public class NoteController {
                 return REDIRECT_NOTE_ERROR;
             }
         } else {
-            return "redirect:/note/list";
+            return REDIRECT_NOTE_LIST;
         }
-
-        return "redirect:/note/list";
+        return REDIRECT_NOTE_LIST;
     }
-
 
     @GetMapping("/share/{id}")
     public String viewSharedNote(@PathVariable("id") String noteId, Model model) {
@@ -156,7 +155,7 @@ public class NoteController {
             note = optionalNote.get();
         }
         if (note.getAccessType().equals(AccessType.PRIVATE)) {
-            return "redirect:/note/denied";
+            return REDIRECT_NOTE_DENIED;
         }
 
         model.addAttribute("note", note);
@@ -169,21 +168,10 @@ public class NoteController {
         return "note/error";
     }
 
-    private boolean saveNote(Note note, RedirectAttributes redirectAttributes) {
-        try {
-            noteService.save(note);
-            return true;
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addAttribute(NOTE_ERROR_ATTRIBUTE, e.getMessage());
-            return false;
-        }
-    }
-
-    @GetMapping("/denied")
+      @GetMapping("/denied")
     public String getDenied(Model model) {
         return "note/access-denied";
     }
-
 
     @GetMapping("/view/{id}")
     public String viewNote(@PathVariable("id") String noteId, Model model) {
@@ -196,14 +184,19 @@ public class NoteController {
                 model.addAttribute("note", note);
                 return "note/view";
             } else {
-                return "redirect:/note/denied";
+                return REDIRECT_NOTE_DENIED;
             }
         }
-        return "redirect:/note/list";
+        return REDIRECT_NOTE_LIST;
     }
 
-    @GetMapping("/notfound")
-    public String notFound(Model model) {
-        return "note/note-notfound";
+    private boolean saveNote(Note note, RedirectAttributes redirectAttributes) {
+        try {
+            noteService.save(note);
+            return true;
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addAttribute(NOTE_ERROR_ATTRIBUTE, e.getMessage());
+            return false;
+        }
     }
 }

@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static java.text.MessageFormat.format;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {

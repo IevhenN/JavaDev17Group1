@@ -4,8 +4,7 @@ import org.springframework.context.MessageSource;
 
 import java.util.Locale;
 
-public class NoteAppException extends RuntimeException{
-
+public class NoteAppException extends RuntimeException {
     private Object[] args;
 
     public NoteAppException(String message) {
