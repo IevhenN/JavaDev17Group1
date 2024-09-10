@@ -247,3 +247,19 @@ img {
     padding: 10px;
     font-size: 16px;
 }
+
+.position{
+    margin-right: 10px;
+}
+
+.color_width{
+    width: 70px;
+}
+
+.color_style{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7px
+}
+

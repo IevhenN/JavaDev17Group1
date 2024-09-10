@@ -25,8 +25,8 @@
     <div>
         <form action="/note/list" method="get" class="d-flex mb-3">
             <input type="text" name="title" class="form-control me-2" >
-            <button type="submit" class="btn btn-outline-primary me-2">Search</button>
-            <a href="/note/list" class="btn btn-outline-primary me-2" >Clear</a>
+            <button type="submit" class="btn btn-outline-success me-2 bold-text" th:text="#{search}">Search</button>
+            <a href="/note/list" class="btn btn-outline-warning me-2 bold-text" th:text="#{clear}">Clear</a>
 
         </form>
     </div>
@@ -37,7 +37,7 @@
         <thead>
         <tr class="column_name scalable_element">
             <th class="scalable_element">#</th>
-            <th class="scalable_element">#</th>
+            <th class="scalable_element" th:text="#{color}">Color</th>
             <th class="scalable_element" th:text="#{created.at}">Created At</th>
             <th class="scalable_element" th:text="#{name}">Ім'я</th>
             <th class="scalable_element" th:text="#{content}">Вміст</th>
@@ -47,33 +47,35 @@
         </thead>
 
         <tbody>
-            <tr class="scalable_element" th:each="note : ${notes}" >
+        <tr class="scalable_element" th:each="note : ${notes}" >
 
-                <td class="scalable_element"></td>
-                <td>
-                    <div th:style="'width: 100px; height: 20px; background-color: ' + ${note.color}"></div>
-                </td>
-                <td class="scalable_element" th:text="${note.date}" >Date</td>
-                <td class="scalable_element">
-                    <a th:href="@{/note/view/{id}(id=${note.id})}" th:text="${note.title}">Title</a>
-                </td>
-                <td class="scalable_element" th:text="${note.content}">Content</td>
-                <td class="scalable_element" th:text="${note.accessType}" >Access</td>
-                <td >
-                    <button type="button" class="btn btn-outline-info bold-text scalable_element"
-                            th:data-note-id="${note.id}"
-                            onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{link}">Copy Link</button>
-                    <form action="/note/edit" method="get" class="d-inline mr-2 scalable_element">
-                        <input type="hidden" name="id" th:value="${note.id}">
-                        <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
-                    </form>
-                    <form action="/note/delete" method="post" class="d-inline mr-2 scalable_element">
-                        <input type="hidden" name="id" th:value="${note.id}">
-                        <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
-                                th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
-                    </form>
-                </td>
-            </tr>
+            <td class="scalable_element"></td>
+            <td>
+                <div class="color_style">
+                <div th:style=" 'width: 100px; height: 20px; background-color: ' + ${note.color}"></div>
+                </div>
+            </td>
+            <td class="scalable_element" th:text="${note.date}" >Date</td>
+            <td class="scalable_element">
+                <a th:href="@{/note/view/{id}(id=${note.id})}" th:text="${note.title}" >Title</a>
+            </td>
+            <td class="scalable_element" th:text="${note.content}">Content</td>
+            <td class="scalable_element" th:text="${note.accessType}" >Access</td>
+            <td >
+                <button type="button" class="btn btn-outline-info bold-text scalable_element"
+                        th:data-note-id="${note.id}"
+                        onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{link}">Copy Link</button>
+                <form action="/note/edit" method="get" class="d-inline mr-2 scalable_element">
+                    <input type="hidden" name="id" th:value="${note.id}">
+                    <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
+                </form>
+                <form action="/note/delete" method="post" class="d-inline mr-2 scalable_element">
+                    <input type="hidden" name="id" th:value="${note.id}">
+                    <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
+                            th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
+                </form>
+            </td>
+        </tr>
         </tbody>
     </table>
 

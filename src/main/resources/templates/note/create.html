@@ -25,20 +25,21 @@
             <textarea id="content" name="content" th:field="*{content}" th:placeholder="#{note.text}" class="form-control orm_textarea_color scalable_element" rows="10" required></textarea>
         </div>
 
-        <div class="form-group d-flex align-items-center">
+        <div class="form-group d-flex align-items-center justify-content-between">
             <div class="form-check form-check-inline">
-                <input class="form-check-input scalable_element" type="radio" id="public" name="accessType" value="PUBLIC" th:checked="${note.accessType.name() == 'PUBLIC'}">
-                <label class="form-check-label public_color scalable_element" for="public" th:text="#{public}">Public</label>
-            </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input scalable_element" type="radio" id="public" name="accessType" value="PUBLIC" th:checked="${note.accessType.name() == 'PUBLIC'}">
+                    <label class="form-check-label public_color scalable_element" for="public" th:text="#{public}">Public</label>
+                </div>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input scalable_element" type="radio" id="private" name="accessType" value="PRIVATE" th:checked="${note.accessType.name() == 'PRIVATE'}">
-                <label class="form-check-label privat_color scalable_element" for="private" th:text="#{private}">Private</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input scalable_element" type="radio" id="private" name="accessType" value="PRIVATE" th:checked="${note.accessType.name() == 'PRIVATE'}">
+                    <label class="form-check-label privat_color scalable_element" for="private" th:text="#{private}">Private</label>
+                </div>
             </div>
-
             <div class="d-flex align-items-center ml-3">
-                <label for="color" th:text="#{note.color}" class="font_x_large mr-2 scalable_element">Color</label>
-                <input type="color" id="color" name="color" th:field="*{color}" class="form-control color-picker scalable_element" style="width: 70px;">
+                <label for="color" th:text="#{color}" class="form-check-label privat_color scalable_element position">Color</label>
+                <input type="color" id="color" name="color" th:field="*{color}" class="form-control color-picker scalable_element color_width" />
             </div>
         </div>
 
